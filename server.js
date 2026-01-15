@@ -50,10 +50,12 @@ async function storeStationData(data) {
     //     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     //   )
     // `);
+    const i = 0;
     console.log("try");
     // Insert data into the table
     for (const station of data.result) {
-      console.log("await");
+      console.log("await", i);
+      i++;
       await insertStationData(client, station);
       // await client.query(
       //   'INSERT INTO stations (station_id, station_name, data) VALUES ($1, $2, $3) ON CONFLICT (station_id) DO NOTHING',
