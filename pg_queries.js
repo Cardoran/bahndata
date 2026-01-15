@@ -64,7 +64,36 @@ export async function insertStationData(client, stationData) {
             )
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20,
                     $21, $22, $23, $24, $25, $26, $27, $28, $29, $30)
-            ON CONFLICT (number) DO NOTHING
+            ON CONFLICT (number) DO UPDATE SET
+                ifopt = EXCLUDED.ifopt,
+                name = EXCLUDED.name,
+                category = EXCLUDED.category,
+                price_category = EXCLUDED.price_category,
+                has_parking = EXCLUDED.has_parking,
+                has_bicycle_parking = EXCLUDED.has_bicycle_parking,
+                has_local_public_transport = EXCLUDED.has_local_public_transport,
+                has_public_facilities = EXCLUDED.has_public_facilities,
+                has_locker_system = EXCLUDED.has_locker_system,
+                has_taxi_rank = EXCLUDED.has_taxi_rank,
+                has_travel_necessities = EXCLUDED.has_travel_necessities,
+                has_stepless_access = EXCLUDED.has_stepless_access,
+                has_mobility_service = EXCLUDED.has_mobility_service,
+                has_wifi = EXCLUDED.has_wifi,
+                has_travel_center = EXCLUDED.has_travel_center,
+                has_railway_mission = EXCLUDED.has_railway_mission,
+                has_db_lounge = EXCLUDED.has_db_lounge,
+                has_lost_and_found = EXCLUDED.has_lost_and_found,
+                has_car_rental = EXCLUDED.has_car_rental,
+                federal_state = EXCLUDED.federal_state,
+                federal_state_code = EXCLUDED.federal_state_code,
+                country_code = EXCLUDED.country_code,
+                municipality_code = EXCLUDED.municipality_code,
+                mailing_address_id = EXCLUDED.mailing_address_id,
+                regional_area_id = EXCLUDED.regional_area_id,
+                task_carrier_id = EXCLUDED.task_carrier_id,
+                time_table_office_id = EXCLUDED.time_table_office_id,
+                szentrale_id = EXCLUDED.szentrale_id,
+                station_management_id = EXCLUDED.station_management_id
             RETURNING id`,
             [
             stationData.number, stationData.ifopt, stationData.name, stationData.category,
