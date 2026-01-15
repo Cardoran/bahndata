@@ -7,15 +7,6 @@ import { insertStationData } from './pg_queries.js';
 const app = express();
 const port = 3000;
 
-// PostgreSQL connection pool
-const pool = new Pool({
-  user: 'bahn_miner',
-  host: '192.168.178.40',
-  database: 'station_data',
-  password: 'bahn_miner_password',
-  port: 5432,
-});
-console.log('Pool:', pool); // Should log the pool object, not 'undefined'
 
 
 // API configuration
@@ -39,6 +30,14 @@ async function fetchStationData() {
 
 // Function to store data in PostgreSQL
 async function storeStationData(data) {
+  // PostgreSQL connection pool
+  const pool = new Pool({
+    user: 'bahn_miner',
+    host: '192.168.178.40',
+    database: 'station_data',
+    password: 'bahn_miner_password',
+    port: 5432,
+  });
   const client = await pool.connect();
   try {
     // Create a table if it doesn't exist
@@ -71,7 +70,6 @@ async function storeStationData(data) {
 // Endpoint to trigger data fetch and store
 app.get('/fetch-stations', async (req, res) => {
   const data = await fetchStationData();
-  console.log(data)
   if (data) {
     await storeStationData(data);
     res.send('Data fetched and stored successfully');
