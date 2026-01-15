@@ -54,7 +54,7 @@ async function storeStationData(data) {
     console.log("try");
     // Insert data into the table
     for (const station of data.result) {
-      console.log("await", i);
+      console.log("await", i, station.name);
       i++;
       if(i>10){
         break;
