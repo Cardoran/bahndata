@@ -1,5 +1,5 @@
 {
-    "name": "db-api-server",
+    "name": "bahndata",
     "version": "1.0.0",
     "description": "A server to fetch Deutsche Bahn station data and store it in PostgreSQL",
     "main": "server.js",
