@@ -19,8 +19,8 @@ const pool = new Pool({
 // API configuration
 const apiUrl = 'https://apis.deutschebahn.com/db-api-marketplace/apis/station-data/v2/stations';
 const apiHeaders = {
-  'DB-Api-Key': '2b83a09f021fad54d68cc31e3b5e03e2', // Replace with your API key
-  'DB-Client-Id': '235a6da868e721b3ed0f8915d17759fb',
+  'DB-Api-Key': '235a6da868e721b3ed0f8915d17759fb', // Replace with your API key
+  'DB-Client-Id': '2b83a09f021fad54d68cc31e3b5e03e2',
   'Accept': 'application/json',
 };
 
