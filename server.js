@@ -11,7 +11,7 @@ const port = 3000;
 const pool = new Pool({
   user: 'bahn_miner',
   host: '192.168.178.40',
-  database: 'all_stations',
+  database: 'station_data',
   password: 'bahn_miner_password',
   port: 5432,
 });
