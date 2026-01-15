@@ -1,4 +1,4 @@
-async function insertStationData(stationData) {
+export async function insertStationData(stationData) {
     const client = await pool.connect();
   
     try {
