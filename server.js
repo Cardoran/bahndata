@@ -40,30 +40,9 @@ async function fetchStationData() {
 async function storeStationData(data) {
   const client = await pool.connect();
   try {
-    // Create a table if it doesn't exist
-    // await client.query(`
-    //   CREATE TABLE IF NOT EXISTS stations (
-    //     id SERIAL PRIMARY KEY,
-    //     station_id VARCHAR(50),
-    //     station_name VARCHAR(255),
-    //     data JSONB,
-    //     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    //   )
-    // `);
-    var i = 0;
-    console.log("try");
     // Insert data into the table
     for (const station of data.result) {
-      console.log("await", i, station.name, station.municipalityCode, station.hasMobilityService, station.hasSteplessAccess);
-      i++;
-      if(i>10){
-        break;
-      }
       await insertStationData(client, station);
-      // await client.query(
-      //   'INSERT INTO stations (station_id, station_name, data) VALUES ($1, $2, $3) ON CONFLICT (station_id) DO NOTHING',
-      //   [station.id, station.name, station]
-      // );
     }
     console.log('Data stored successfully');
   } catch (error) {
