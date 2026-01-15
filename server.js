@@ -50,7 +50,7 @@ async function storeStationData(data) {
     //     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     //   )
     // `);
-    const i = 0;
+    var i = 0;
     console.log("try");
     // Insert data into the table
     for (const station of data.result) {
