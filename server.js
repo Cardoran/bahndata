@@ -56,6 +56,9 @@ async function storeStationData(data) {
     for (const station of data.result) {
       console.log("await", i);
       i++;
+      if(i>10){
+        break;
+      }
       await insertStationData(client, station);
       // await client.query(
       //   'INSERT INTO stations (station_id, station_name, data) VALUES ($1, $2, $3) ON CONFLICT (station_id) DO NOTHING',
