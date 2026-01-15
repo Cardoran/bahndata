@@ -54,7 +54,7 @@ async function storeStationData(data) {
     console.log("try");
     // Insert data into the table
     for (const station of data.result) {
-      console.log("await", i, station.name, station.municipality_code, station.has_mobility_service, station.has_stepless_access);
+      console.log("await", i, station.name, station.municipalityCode, station.hasMobilityService, station.hasSteplessAccess);
       i++;
       if(i>10){
         break;
