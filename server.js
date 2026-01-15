@@ -87,6 +87,18 @@ cron.schedule('0 */5 * * *', async () => {
   }
 });
 
+
+// Handle SIGTERM for graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received. Shutting down gracefully...');
+  app.close(() => {
+    console.log('Server closed.');
+    pool.end(); // Close the PostgreSQL connection pool
+    process.exit(0);
+  });
+});
+
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
