@@ -109,7 +109,7 @@ export async function insertStationData(client, stationData) {
         await client.query('ROLLBACK');
         console.error('Error inserting data:', error);
     } finally {
-        client.release();
+        // client.release();
     }
   }
   
