@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Pool } from ('pg');
 import express from ('express');
 import cron from ('node-cron');
-import {} from './pg_queries.js';
+import { insertStationData } from './pg_queries.js';
 
 const app = express();
 const port = 3000;
@@ -40,22 +40,23 @@ async function storeStationData(data) {
   const client = await pool.connect();
   try {
     // Create a table if it doesn't exist
-    await client.query(`
-      CREATE TABLE IF NOT EXISTS stations (
-        id SERIAL PRIMARY KEY,
-        station_id VARCHAR(50),
-        station_name VARCHAR(255),
-        data JSONB,
-        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
+    // await client.query(`
+    //   CREATE TABLE IF NOT EXISTS stations (
+    //     id SERIAL PRIMARY KEY,
+    //     station_id VARCHAR(50),
+    //     station_name VARCHAR(255),
+    //     data JSONB,
+    //     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    //   )
+    // `);
 
     // Insert data into the table
     for (const station of data.result) {
-      await client.query(
-        'INSERT INTO stations (station_id, station_name, data) VALUES ($1, $2, $3) ON CONFLICT (station_id) DO NOTHING',
-        [station.id, station.name, station]
-      );
+      await insertStationData(station);
+      // await client.query(
+      //   'INSERT INTO stations (station_id, station_name, data) VALUES ($1, $2, $3) ON CONFLICT (station_id) DO NOTHING',
+      //   [station.id, station.name, station]
+      // );
     }
     console.log('Data stored successfully');
   } catch (error) {
