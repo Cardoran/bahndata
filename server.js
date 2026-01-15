@@ -8,6 +8,14 @@ const app = express();
 const port = 80;
 
 
+  // PostgreSQL connection pool
+  const pool = new Pool({
+    user: 'bahn_miner',
+    host: '192.168.178.40',
+    database: 'station_data',
+    password: 'bahn_miner_password',
+    port: 5432,
+  });
 
 // API configuration
 const apiUrl = 'https://apis.deutschebahn.com/db-api-marketplace/apis/station-data/v2/stations';
@@ -30,14 +38,6 @@ async function fetchStationData() {
 
 // Function to store data in PostgreSQL
 async function storeStationData(data) {
-  // PostgreSQL connection pool
-  const pool = new Pool({
-    user: 'bahn_miner',
-    host: '192.168.178.40',
-    database: 'station_data',
-    password: 'bahn_miner_password',
-    port: 5432,
-  });
   const client = await pool.connect();
   try {
     // Create a table if it doesn't exist
