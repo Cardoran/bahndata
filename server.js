@@ -15,6 +15,8 @@ const pool = new Pool({
   password: 'bahn_miner_password',
   port: 5432,
 });
+console.log('Pool:', pool); // Should log the pool object, not 'undefined'
+
 
 // API configuration
 const apiUrl = 'https://apis.deutschebahn.com/db-api-marketplace/apis/station-data/v2/stations';
@@ -69,6 +71,7 @@ async function storeStationData(data) {
 // Endpoint to trigger data fetch and store
 app.get('/fetch-stations', async (req, res) => {
   const data = await fetchStationData();
+  console.log(data)
   if (data) {
     await storeStationData(data);
     res.send('Data fetched and stored successfully');
