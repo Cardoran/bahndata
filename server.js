@@ -58,7 +58,7 @@ async function storeStationData(data) {
 app.get('/fetch-stations', async (req, res) => {
   const client = await pool.connect();
   try {
-    data = client.query('SELECT * FROM stations LIMIT 10;')
+    const data = client.query('SELECT * FROM stations LIMIT 10;')
     res.send(data);
   } catch (error) {
     res.send(error.message)
