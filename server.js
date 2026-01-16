@@ -7,15 +7,17 @@ import { insertStationData } from './pg_queries.js';
 const app = express();
 const port = 80;
 
+// Serve static files (e.g., HTML, CSS, JS)
+app.use(express.static('public'));
 
-  // PostgreSQL connection pool
-  const pool = new Pool({
-    user: 'bahn_miner',
-    host: '192.168.178.40',
-    database: 'station_data',
-    password: 'bahn_miner_password',
-    port: 5432,
-  });
+// PostgreSQL connection pool
+const pool = new Pool({
+  user: 'bahn_miner',
+  host: '192.168.178.40',
+  database: 'station_data',
+  password: 'bahn_miner_password',
+  port: 5432,
+});
 
 // API configuration
 const apiUrl = 'https://apis.deutschebahn.com/db-api-marketplace/apis/station-data/v2/stations';
@@ -54,14 +56,24 @@ async function storeStationData(data) {
 
 // Endpoint to trigger data fetch and store
 app.get('/fetch-stations', async (req, res) => {
+  // const data = await fetchStationData();
+  // if (data) {
+  //   await storeStationData(data);
+  //   res.send('Data fetched and stored successfully');
+  // } else {
+  //   res.status(500).send('Error fetching data');
+  // }
+  res.send('joa, nüscht hier.')
+});
+
+// Call fetchStationData immediately when the server starts
+(async () => {
   const data = await fetchStationData();
   if (data) {
     await storeStationData(data);
-    res.send('Data fetched and stored successfully');
-  } else {
-    res.status(500).send('Error fetching data');
+    console.log('Initial data fetch completed');
   }
-});
+})();
 
 // Schedule data fetch every 5 hours
 cron.schedule('0 */5 * * *', async () => {
