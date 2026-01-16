@@ -56,6 +56,13 @@ async function storeStationData(data) {
 
 // Endpoint to trigger data fetch and store
 app.get('/fetch-stations', async (req, res) => {
+  const client = await pool.connect();
+  try {
+    data = client.query('SELECT * FROM stations LIMIT 10;')
+    res.send(data);
+  } catch {
+    res.send('query failed!')
+  }
   // const data = await fetchStationData();
   // if (data) {
   //   await storeStationData(data);
