@@ -128,8 +128,8 @@ export async function insertStationData(client, stationData) {
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
             [
                 stationId, ril100.rilIdentifier, ril100.isMain, ril100.hasSteamPermission,
-                ril100.steamPermission, ril100.geographicCoordinates.coordinates?.[1] ?? null,
-                ril100.geographicCoordinates.coordinates?.[0] ?? null, ril100.primaryLocationCode
+                ril100.steamPermission, ril100.geographicCoordinates?.coordinates?.[1] ?? null,
+                ril100.geographicCoordinates?.coordinates?.[0] ?? null, ril100.primaryLocationCode
             ]
             );
         }
