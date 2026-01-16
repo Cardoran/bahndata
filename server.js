@@ -60,7 +60,7 @@ app.get('/fetch-stations', async (req, res) => {
   try {
     data = client.query('SELECT * FROM stations LIMIT 10;')
     res.send(data);
-  } catch {
+  } catch (error) {
     res.send(error.message)
   }
   // const data = await fetchStationData();
