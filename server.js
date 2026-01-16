@@ -73,14 +73,15 @@ app.get('/fetch-stations', async (req, res) => {
   // res.send('joa, nüscht hier.')
 });
 
+
 // Call fetchStationData immediately when the server starts
-(async () => {
-  const data = await fetchStationData();
-  if (data) {
-    await storeStationData(data);
-    console.log('Initial data fetch completed');
-  }
-})();
+// (async () => {
+//   const data = await fetchStationData();
+//   if (data) {
+//     await storeStationData(data);
+//     console.log('Initial data fetch completed');
+//   }
+// })();
 
 // Schedule data fetch every 5 hours
 cron.schedule('0 */5 * * *', async () => {
