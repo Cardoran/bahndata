@@ -61,7 +61,7 @@ app.get('/fetch-stations', async (req, res) => {
     data = client.query('SELECT * FROM stations LIMIT 10;')
     res.send(data);
   } catch {
-    res.send('query failed!')
+    res.send(error.message)
   }
   // const data = await fetchStationData();
   // if (data) {
@@ -70,7 +70,7 @@ app.get('/fetch-stations', async (req, res) => {
   // } else {
   //   res.status(500).send('Error fetching data');
   // }
-  res.send('joa, nüscht hier.')
+  // res.send('joa, nüscht hier.')
 });
 
 // Call fetchStationData immediately when the server starts
