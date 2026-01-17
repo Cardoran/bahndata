@@ -1,5 +1,5 @@
-const axios = require('axios');
-const { format, addDays } = require('date-fns');
+import axios from 'axios';
+import { format, addDays } from 'date-fns';
 
 export async function getTimetableXml(api_auth_headers, evaNr, date = null) {
   // If no date is provided, use the current date and time

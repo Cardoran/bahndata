@@ -3,7 +3,7 @@ import { Pool } from 'pg';
 import express from 'express';
 import cron from 'node-cron';
 import { insertStationData } from './pg_queries.js';
-import {getTimetableXml} from './bahn_api_queries.js';
+import { getTimetableXml } from './bahn_api_queries.js';
 
 const app = express();
 const port = 80;
