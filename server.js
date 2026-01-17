@@ -3,6 +3,7 @@ import { Pool } from 'pg';
 import express from 'express';
 import cron from 'node-cron';
 import { insertStationData } from './pg_queries.js';
+import {getTimetableXml} from './bahn_api_queries.js';
 
 const app = express();
 const port = 80;
@@ -61,8 +62,13 @@ app.get('/fetch-stations', async (req, res) => {
     const result = await pool.query('SELECT * FROM stations LIMIT 10;')
     res.json(result.rows);
   } catch (error) {
-    res.send(error.message)
+    res.send(error.message);
   }
+});
+
+app.get('/timetable', async (req, res) => {
+  const response = await getTimetableXml(apiHeaders, 8000068);
+  res.json(response);
 });
 
 
