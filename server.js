@@ -63,14 +63,6 @@ app.get('/fetch-stations', async (req, res) => {
   } catch (error) {
     res.send(error.message)
   }
-  // const data = await fetchStationData();
-  // if (data) {
-  //   await storeStationData(data);
-  //   res.send('Data fetched and stored successfully');
-  // } else {
-  //   res.status(500).send('Error fetching data');
-  // }
-  // res.send('joa, nüscht hier.')
 });
 
 
@@ -82,6 +74,7 @@ app.get('/fetch-stations', async (req, res) => {
 //     console.log('Initial data fetch completed');
 //   }
 // })();
+
 
 // Schedule data fetch every 5 hours
 cron.schedule('0 */5 * * *', async () => {
