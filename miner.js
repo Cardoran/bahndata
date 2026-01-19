@@ -75,7 +75,7 @@ async function miner_loop(time) {
     const intervalId = setInterval(async () => {
         const tt = await get_timetable(8000068, time);
         store_timetable(tt);
-    }, 600);
+    }, 1200);
 }
 
 export async function miner_coordinator() {
