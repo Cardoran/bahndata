@@ -71,9 +71,15 @@ async function store_timetable(tt) {
     logWithTimestamp("db store data", tt);
 }
 
-export async function miner_loop() {
-    cron.schedule('0 0 0 0 600', async () => {
-        const tt = await get_timetable(8000068, 20);
+async function miner_loop(time) {
+    const intervalId = setInterval(async () => {
+        const tt = await get_timetable(8000068, time);
         store_timetable(tt);
+    }, 600);
+}
+
+export async function miner_coordinator() {
+    cron.schedule('0 * * * *', async () => {
+        miner_loop(20);
     });
 }
