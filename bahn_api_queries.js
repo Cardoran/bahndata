@@ -36,8 +36,6 @@ export async function getTimetableXml(api_auth_headers, evaNr, date = null) {
       throw new Error(`Can't request timetable! The request failed with the HTTP status code ${response.status}: ${response.statusText}`);
     }
 
-    const parser = new xml2js.Parser({ explicitArray: false });
-
     // Return the response text
     return parseXml(response.data);
   } catch (error) {
@@ -48,6 +46,7 @@ export async function getTimetableXml(api_auth_headers, evaNr, date = null) {
 
 async function parseXml(xml) {
     try {
+        const parser = new xml2js.Parser({ explicitArray: false });
         const result = await parser.parseStringPromise(xml);
         // console.log('JSON Result:', result);
         return result;
