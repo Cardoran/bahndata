@@ -64,11 +64,13 @@ cron.schedule('0 */5 * * *', async () => {
 
 async function get_timetable(station, time) {
     logWithTimestamp("api query:", station, time);
+    console.log("get_tt");
     return "dummy data";
 }
 
 async function store_timetable(tt) {
     logWithTimestamp("db store data", tt);
+    console.log("log tt");
 }
 
 async function miner_loop(time) {
@@ -79,7 +81,8 @@ async function miner_loop(time) {
 }
 
 export async function miner_coordinator() {
-    cron.schedule('0 * * * *', async () => {
-        miner_loop(20);
-    });
+    miner_loop(21);
+    // cron.schedule('0 * * * *', async () => {
+    //     miner_loop(20);
+    // });
 }
