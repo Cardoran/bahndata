@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { format, addDays } from 'date-fns';
+import { format, addDays, addHours } from 'date-fns';
 import xml2js from 'xml2js';
 
 export async function getTimetableXml(api_auth_headers, evaNr, date = null) {
   // If no date is provided, use the current date and time
   if (!date) {
-    date = new Date();
+    date = addHours(new Date(), 1);
   }
 
   // Format the date and hour as strings
