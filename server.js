@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
 import express from 'express';
-import { miner_loop } from './miner.js';
+import { miner_coordinator } from './miner.js';
 
 const app = express();
 const port = 80;
@@ -34,7 +34,7 @@ app.get('/timetable', async (req, res) => {
   // res.json(response);
 });
 
-miner_loop();
+miner_coordinator();
 
 // Handle SIGTERM for graceful shutdown
 process.on('SIGTERM', () => {
