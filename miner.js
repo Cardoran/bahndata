@@ -3,10 +3,10 @@ import cron from 'node-cron';
 import { insertStationData } from './pg_queries.js';
 import { getTimetableXml } from './bahn_api_queries.js';
 
-function logWithTimestamp(message) {
+function timestamp() {
     const now = new Date();
     const timestamp = now.toLocaleString(); // or use a custom format
-    console.log(`[${timestamp}] ${message}`);
+    return `[${timestamp}]`;
   }
 
 // API configuration
@@ -63,14 +63,12 @@ cron.schedule('0 */5 * * *', async () => {
 });
 
 async function get_timetable(station, time) {
-    logWithTimestamp("api query:", station, time);
-    console.log("get_tt");
+    console.log(timestamp(), "api query:", station, time);
     return "dummy data";
 }
 
 async function store_timetable(tt) {
-    logWithTimestamp("db store data", tt);
-    console.log("log tt");
+    console.log(timestamp(), "db store data", tt);
 }
 
 async function miner_loop(time) {
