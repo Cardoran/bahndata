@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
 import express from 'express';
-import { miner_loop } from './miner';
+import { miner_loop } from './miner.js';
 
 const app = express();
 const port = 80;
