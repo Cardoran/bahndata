@@ -20,7 +20,7 @@ export class miner_coordinator {
         this.miner_loop(21);
 
         // Call fetchStationData immediately when the server starts
-        this.refresh_station_data();
+        // this.refresh_station_data();
 
         // Schedule data fetch every 5 hours
         cron.schedule('0 4 * * *', this.refresh_station_data);
