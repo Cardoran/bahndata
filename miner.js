@@ -41,7 +41,7 @@ export class miner_coordinator {
         const intervalId = setInterval(async () => {
             const tt = await this.get_timetable(eva_list[i], time);
             this.pgq.store_timetable(tt);
-            console.log(timestamp(), "api query and store:", eva_list[i], time, "(",i/l*100,"%)");
+            console.log(timestamp(), "api query and store:", eva_list[i], time, `( ${(i/l*100).toFixed(2)}%, ${((l-i)*1.2/60).toFixed(1)} mins left )`);
             i ++;
             if (i>=l) {
                 console.log('done all evas');
