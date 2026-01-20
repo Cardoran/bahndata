@@ -49,7 +49,7 @@ async function parseXml(xml) {
         const parser = new xml2js.Parser({ explicitArray: false });
         const result = await parser.parseStringPromise(xml);
         // console.log('XML Result:', xml);
-        console.log('JSON Result:', result.timetable.s[0]);
+        console.log('JSON Result:', result.timetable.s);
         return result;
     } catch (error) {
         console.error('Error parsing XML:', error);
