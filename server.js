@@ -24,10 +24,10 @@ const pool = new Pool({
   port: 5432,
 });
 
-const client = await pool.connect();
-const pgq = new pg_query_handler(client);
-const miner = new miner_coordinator(apiHeaders, pgq);
-miner.run()
+// const client = await pool.connect();
+// const pgq = new pg_query_handler(client);
+// const miner = new miner_coordinator(apiHeaders, pgq);
+// miner.run()
 
 // Endpoint to trigger data fetch and store
 app.get('/fetch-stations', async (req, res) => {
