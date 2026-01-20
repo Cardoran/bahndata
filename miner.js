@@ -46,6 +46,7 @@ export class miner_coordinator {
     async refresh_station_data() {
         const data = await this.fetchStationData();
         if (data) {
+            console.log(data.result[0]);
             await this.pgq.storeStationData(data);
             console.log('Data fetched and stored automatically');
         }
@@ -53,11 +54,11 @@ export class miner_coordinator {
     // Function to fetch data from the API
     async fetchStationData() {
         try {
-        const response = await axios.get(this.apiUrl_stations, { headers: this.apiHeaders });
-        return response.data;
+            const response = await axios.get(this.apiUrl_stations, { headers: this.apiHeaders });
+            return response.data;
         } catch (error) {
-        console.error('Error fetching data:', error.message);
-        return null;
+            console.error('Error fetching data:', error.message);
+            return null;
         }
     }
 
