@@ -37,17 +37,17 @@ export async function getTimetableXml(api_auth_headers, evaNr, date = null) {
     }
 
     // Return the response text
-    return parseXml(response.data);
+    return await parseXml(response.data);
   } catch (error) {
     console.error('Error:', error.message);
     throw error;
   }
 }
 
-function parseXml(xml) {
+async function parseXml(xml) {
     try {
         const parser = new xml2js.Parser({ explicitArray: false });
-        const result = parser.parseStringPromise(xml);
+        const result = await parser.parseStringPromise(xml);
         // console.log('JSON Result:', result);
         return result;
     } catch (error) {
