@@ -18,7 +18,7 @@ export class miner_coordinator {
     }
 
     run () {
-        this.miner_loop(21);
+        this.miner_loop(new Date());
 
         // Call fetchStationData immediately when the server starts
         // this.refresh_station_data();
@@ -33,15 +33,15 @@ export class miner_coordinator {
         });
     }
     
-    async miner_loop(time) {
+    async miner_loop(datetime) {
         const eva_list = await this.pgq.get_station_evas();
         console.log(eva_list);
         const l = eva_list.length;
         var i = 0;
         const intervalId = setInterval(async () => {
-            const tt = await this.get_timetable(eva_list[i], time);
+            const tt = await this.get_timetable(eva_list[i], datetime);
             this.pgq.store_timetable(tt);
-            console.log(timestamp(), "api query and store:", eva_list[i], time, `( ${(i/l*100).toFixed(2)}%, ${((l-i)*1.2/60).toFixed(1)} mins left )`);
+            console.log(timestamp(), "api query and store:", eva_list[i], format(datetime, 'HH'), `( ${(i/l*100).toFixed(2)}%, ${((l-i)*1.2/60).toFixed(1)} mins left )`);
             i ++;
             if (i>=l) {
                 console.log('done all evas');
@@ -49,8 +49,8 @@ export class miner_coordinator {
             }
         }, 1200);
     }
-    async get_timetable(station, time) {
-        const data = getTimetableXml(this.apiHeaders, station, time);
+    async get_timetable(station, datetime) {
+        const data = await getTimetableXml(this.apiHeaders, station, time);
         return data;
     }
     
