@@ -154,10 +154,7 @@ export class pg_query_handler {
         try {
         // Insert data into the table
             for (const station of data.result) {
-                console.log(station);
-                console.log(station.mailingAddress);
-                await this.insertStationData(this.client, station);
-                break;
+                await this.insertStationData(station);
             }
             console.log('Data stored successfully');
         } catch (error) {
