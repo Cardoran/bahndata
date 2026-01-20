@@ -24,8 +24,8 @@ const pool = new Pool({
   port: 5432,
 });
 
-// const client = await pool.connect();
-// const pgq = new pg_query_handler(client);
+const client = await pool.connect();
+const pgq = new pg_query_handler(client);
 // const miner = new miner_coordinator(apiHeaders, pgq);
 // miner.run()
 
