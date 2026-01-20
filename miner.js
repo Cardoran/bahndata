@@ -1,6 +1,5 @@
 import axios from 'axios';
 import cron from 'node-cron';
-import { insertStationData } from './pg_queries.js';
 import { getTimetableXml } from './bahn_api_queries.js';
 
 function timestamp() {
