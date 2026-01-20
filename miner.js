@@ -46,7 +46,6 @@ export class miner_coordinator {
     async refresh_station_data() {
         const data = await this.fetchStationData();
         if (data) {
-            console.log(data.result[0]);
             await this.pgq.storeStationData(data);
             console.log('Data fetched and stored automatically');
         }
