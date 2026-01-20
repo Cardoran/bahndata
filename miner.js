@@ -1,5 +1,6 @@
 import axios from 'axios';
 import cron from 'node-cron';
+import { format } from 'date-fns';
 import { getTimetableXml } from './bahn_api_queries.js';
 
 function timestamp() {
@@ -28,7 +29,7 @@ export class miner_coordinator {
 
     run_loop () {
         cron.schedule('0 * * * *', async () => {
-            this.miner_loop(20);
+            this.miner_loop(format(new Date(), 'HH'));
         });
     }
     
