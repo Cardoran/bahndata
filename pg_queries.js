@@ -172,6 +172,11 @@ export class pg_query_handler {
         if (!max_category) {
             max_category = 5
         }
-
+        try{
+            return [8080040, 8000452, 8000473]
+        }
+        catch (error) {
+            console.error('Error getting evas from database', error.message);
+        }
     }
 }

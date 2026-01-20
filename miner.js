@@ -23,7 +23,7 @@ export class miner_coordinator {
         this.refresh_station_data();
 
         // Schedule data fetch every 5 hours
-        cron.schedule('0 */5 * * *', this.refresh_station_data);
+        cron.schedule('0 4 * * *', this.refresh_station_data);
     }
 
     run_loop () {
@@ -33,9 +33,17 @@ export class miner_coordinator {
     }
     
     async miner_loop(time) {
+        const eva_list = get_station_evas();
+        const l = length(eva_list);
+        var i = 0;
         const intervalId = setInterval(async () => {
-            const tt = await this.get_timetable(8000068, time);
+            const tt = await this.get_timetable(eva_list[i], time);
             this.pgq.store_timetable(tt);
+            i ++;
+            if (i>=l) {
+                console.log('done all evas');
+                clearInterval(intervalId); 
+            }
         }, 1200);
     }
     async get_timetable(station, time) {
