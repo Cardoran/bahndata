@@ -14,7 +14,6 @@ export class miner_coordinator {
         this.apiHeaders = apiHeaders;
         this.apiUrl = 'https://apis.deutschebahn.com/db-api-marketplace/apis/station-data/v2/stations';
         this.pgq = pg_query_handler;
-
     }
 
     run () {
@@ -24,7 +23,7 @@ export class miner_coordinator {
         this.refresh_station_data();
 
         // Schedule data fetch every 5 hours
-        cron.schedule('0 */5 * * *', this.refresh_station_data());
+        cron.schedule('0 */5 * * *', this.refresh_station_data);
     }
 
     run_loop () {
