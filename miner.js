@@ -50,7 +50,7 @@ export class miner_coordinator {
         }, 1200);
     }
     async get_timetable(station, datetime) {
-        const data = await getTimetableXml(this.apiHeaders, station, time);
+        const data = await getTimetableXml(this.apiHeaders, station, datetime);
         return data;
     }
     
