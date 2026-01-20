@@ -165,7 +165,7 @@ export class pg_query_handler {
     }
     
     async store_timetable(tt) {
-        console.log(timestamp(), "db store data", tt);
+        console.log("db store data", tt);
     }
 
     async get_station_evas(min_category, max_category) {
