@@ -173,7 +173,7 @@ export class pg_query_handler {
             max_category = 5
         }
         try{
-            const result =  this.client.query(`select 
+            const result = await this.client.query(`select 
                 (select en.number 
                 from eva_numbers en 
                 where en.station_id = s.id and en.is_main is true 
