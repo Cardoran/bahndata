@@ -173,7 +173,13 @@ export class pg_query_handler {
             max_category = 5
         }
         try{
-            return [8080040, 8000452, 8000473]
+            return this.client.query(`select 
+                (select en.number 
+                from eva_numbers en 
+                where en.station_id = s.id and en.is_main is true 
+                limit 1) as eva 
+                from stations s 
+                where category <= 5;`);//[8080040, 8000452, 8000473]
         }
         catch (error) {
             console.error('Error getting evas from database', error.message);
