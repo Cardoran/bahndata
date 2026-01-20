@@ -173,13 +173,14 @@ export class pg_query_handler {
             max_category = 5
         }
         try{
-            return this.client.query(`select 
+            const result =  this.client.query(`select 
                 (select en.number 
                 from eva_numbers en 
                 where en.station_id = s.id and en.is_main is true 
                 limit 1) as eva 
                 from stations s 
-                where category <= 5;`).rows.map(row => row.eva);//[8080040, 8000452, 8000473]
+                where category <= 5;`);//[8080040, 8000452, 8000473]
+            return result.rows.map(row => row.eva)
         }
         catch (error) {
             console.error('Error getting evas from database', error.message);
