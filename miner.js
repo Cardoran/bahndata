@@ -50,8 +50,8 @@ export class miner_coordinator {
         }, 1200);
     }
     async get_timetable(station, time) {
-        // console.log(timestamp(), "api query:", station, time);
-        return "dummy data";
+        const data = getTimetableXml(this.apiHeaders, station, time);
+        return data;
     }
     
     async refresh_station_data() {
