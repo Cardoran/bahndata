@@ -33,7 +33,7 @@ export class miner_coordinator {
     }
     
     async miner_loop(time) {
-        const eva_list = this.pgq.get_station_evas();
+        const eva_list = await this.pgq.get_station_evas();
         console.log(eva_list);
         const l = eva_list.length;
         var i = 0;
