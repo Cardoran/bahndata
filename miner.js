@@ -34,7 +34,7 @@ export class miner_coordinator {
     
     async miner_loop(time) {
         const eva_list = this.pgq.get_station_evas();
-        const l = length(eva_list);
+        const l = eva_list.length;
         var i = 0;
         const intervalId = setInterval(async () => {
             const tt = await this.get_timetable(eva_list[i], time);
