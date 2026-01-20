@@ -33,7 +33,7 @@ export class miner_coordinator {
     }
     
     async miner_loop(time) {
-        const eva_list = get_station_evas();
+        const eva_list = this.pgq.get_station_evas();
         const l = length(eva_list);
         var i = 0;
         const intervalId = setInterval(async () => {
