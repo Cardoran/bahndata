@@ -180,9 +180,7 @@ export class pg_query_handler {
                 limit 1) as eva 
                 from stations s 
                 where category <= 5;`);//[8080040, 8000452, 8000473]
-            console.log(result);
-            console.log(result.rows);
-            return result.rows.map(row => row.eva)
+            return result.rows.map(row => row.eva);
         }
         catch (error) {
             console.error('Error getting evas from database', error.message);
