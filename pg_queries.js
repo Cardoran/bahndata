@@ -153,14 +153,15 @@ export class pg_query_handler {
         // const client = await pool.connect();
         try {
         // Insert data into the table
-        for (const station of data.result) {
-            await this.insertStationData(this.client, station);
-        }
-        console.log('Data stored successfully');
+            for (const station of data.result) {
+                await this.insertStationData(this.client, station);
+                break;
+            }
+            console.log('Data stored successfully');
         } catch (error) {
-        console.error('Error storing data:', error.message);
+            console.error('Error storing data:', error.message);
         } finally {
-        // this.client.release();
+            // this.client.release();
         }
     }
     

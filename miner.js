@@ -12,7 +12,7 @@ export class miner_coordinator {
     constructor(apiHeaders, pg_query_handler) {
         // API configuration
         this.apiHeaders = apiHeaders;
-        this.apiUrl = 'https://apis.deutschebahn.com/db-api-marketplace/apis/station-data/v2/stations';
+        this.apiUrl_stations = 'https://apis.deutschebahn.com/db-api-marketplace/apis/station-data/v2/stations';
         this.pgq = pg_query_handler;
     }
 
@@ -53,7 +53,7 @@ export class miner_coordinator {
     // Function to fetch data from the API
     async fetchStationData() {
         try {
-        const response = await axios.get(this.apiUrl, { headers: this.apiHeaders });
+        const response = await axios.get(this.apiUrl_stations, { headers: this.apiHeaders });
         return response.data;
         } catch (error) {
         console.error('Error fetching data:', error.message);
