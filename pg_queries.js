@@ -151,8 +151,9 @@ export class pg_query_handler {
                         latitude, longitude, primary_location_code
                     )
                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-                    ON CONFLICT (station_id, ril_identifier)
+                    ON CONFLICT (ril_identifier)
                     DO UPDATE SET
+                        station_id = EXCLUDED.station_id,
                         is_main = EXCLUDED.is_main,
                         has_steam_permission = EXCLUDED.has_steam_permission,
                         steam_permission = EXCLUDED.steam_permission,
