@@ -200,11 +200,11 @@ export class pg_query_handler {
         try {
             await this.tt_client.query('BEGIN');
         
-            // Insert station eva and name (handle conflict on eva_number)
+            // Insert station eva and name (handle conflict on station_name)
             const station_result = await this.tt_client.query(
                 `INSERT INTO stations (eva_number, station_name)
                  VALUES ($1, $2)
-                 ON CONFLICT (eva_number)
+                 ON CONFLICT (station_name)
                  DO NOTHING
                  RETURNING id`,
                 [tt_data.$.eva, tt_data.$.station]
