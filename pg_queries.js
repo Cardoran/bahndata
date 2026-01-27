@@ -210,13 +210,14 @@ export class pg_query_handler {
         const valueslist = `("${station_subset.map(el => tt_data.timetable[el[0]]).join('", "')}")`;
         console.log(keyslist);
         console.log(valueslist);
+        console.log(tt_data.timetable.station);
         try {
             await this.tt_client.query('BEGIN');
         
             // Insert station eva and name (handle conflict on station_name)
             const station_result = await this.tt_client.query(
                 `WITH res as (
-                    INSERT INTO stations (station_name) 
+                    INSERT INTO stations ${keyslist}
                         VALUES($1)
                         ON CONFLICT (station_name) DO NOTHING
                         RETURNING id
