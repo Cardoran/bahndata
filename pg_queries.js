@@ -207,7 +207,7 @@ export class pg_query_handler {
         const station_subset = Object.entries(station_keys).filter(el => Object.hasOwn(tt_data.timetable, el[0]))
         
         const keyslist = `(${station_subset.map(el => el[1]).join(', ')})`;
-        const valueslist = `("${station_subset.map(el => tt_data.timetable[el[0]]).join('", "')}")`;
+        const valueslist = `(${station_subset.map(el => tt_data.timetable[el[0]]).join(', ')})`;
         console.log(keyslist);
         console.log(valueslist);
         console.log(tt_data.timetable.station);
@@ -218,7 +218,7 @@ export class pg_query_handler {
             const station_result = await this.tt_client.query(
                 `WITH res as (
                     INSERT INTO stations ${keyslist}
-                        VALUES($1)
+                        VALUES${valueslist}
                         ON CONFLICT (station_name) DO NOTHING
                         RETURNING id
                 )
