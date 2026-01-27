@@ -199,7 +199,7 @@ export class pg_query_handler {
         if (tt_data == null) {
             return;
         }
-        console.log("db store data", tt_data["timetable"]);
+        console.log("db store data", tt_data);
         console.log("db store data", tt_data.timetable.station);
         try {
             await this.tt_client.query('BEGIN');
