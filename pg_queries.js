@@ -207,7 +207,7 @@ export class pg_query_handler {
         const station_subset = Object.entries(station_keys).filter(el => Object.hasOwn(tt_data.timetable, el[0]))
         
         const keyslist = `(${station_subset.map(el => el[1]).join(', ')})`;
-        const valueslist = `(${station_subset.map(el => tt_data.timetable[el[0]]).join(', ')})`;
+        const valueslist = `("${station_subset.map(el => tt_data.timetable[el[0]]).join('", "')}")`;
         console.log(keyslist);
         console.log(valueslist);
         try {
