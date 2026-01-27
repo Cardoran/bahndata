@@ -214,16 +214,16 @@ export class pg_query_handler {
             // Insert station eva and name (handle conflict on station_name)
             const station_result = await this.tt_client.query(
                 `WITH res as (
-                    INSERT INTO stations $1 
-                        VALUES $2
+                    INSERT INTO stations ${keyslist} 
+                        VALUES ${valueslist}
                         ON CONFLICT (station_name) DO NOTHING
                         RETURNING id
                 )
                 SELECT id FROM res
                     UNION ALL
-                SELECT id FROM stations WHERE station_name=$3
+                SELECT id FROM stations WHERE station_name=$1
                 LIMIT 1`,
-                [keyslist, valueslist, tt_data.timetable.station]
+                [tt_data.timetable.station]
             );
             const station_id = station_result.rows[0].id;
             console.log("stored data to:", station_id);
