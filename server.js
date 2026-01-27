@@ -16,7 +16,7 @@ const apiHeaders = {
 };
 
 // PostgreSQL connection pool
-const pool = new Pool({
+const stations_pool = new Pool({
   user: 'bahn_miner',
   host: '192.168.178.40',
   database: 'station_data',
@@ -24,16 +24,16 @@ const pool = new Pool({
   port: 5432,
 });
 
-const client = await pool.connect();
+const client = await stations_pool.connect();
 const pgq = new pg_query_handler(client);
 const miner = new miner_coordinator(apiHeaders, pgq);
 miner.run()
 
 // Endpoint to trigger data fetch and store
 app.get('/fetch-stations', async (req, res) => {
-  // const client = await pool.connect();
+  // const client = await stations_pool.connect();
   try {
-    const result = await pool.query('SELECT * FROM stations LIMIT 10;')
+    const result = await stations_pool.query('SELECT * FROM stations LIMIT 10;')
     res.json(result.rows);
   } catch (error) {
     res.send(error.message);
@@ -55,7 +55,7 @@ process.on('SIGTERM', () => {
   console.log('SIGTERM received. Shutting down gracefully...');
   server.close(() => {
     console.log('Server closed.');
-    pool.end(); // Close the PostgreSQL connection pool
+    stations_pool.end(); // Close the PostgreSQL connection pool
     process.exit(0);
   });
 });
