@@ -1,16 +1,17 @@
 export class pg_query_handler {
-    constructor (pg_client) {
-        this.client = pg_client;
+    constructor (stations_client, timetable_client) {
+        this.st_client = stations_client;
+        this.tt_client = timetable_client;
     }
 
     async insertStationData(stationData) {
         // const client = await pool.connect();
     
         try {
-            await this.client.query('BEGIN');
+            await this.st_client.query('BEGIN');
         
             // Insert mailing address (handle conflict on city, street, zipcode)
-            const mailingAddressResult = await this.client.query(
+            const mailingAddressResult = await this.st_client.query(
                 `INSERT INTO mailing_addresses (city, zipcode, street)
                  VALUES ($1, $2, $3)
                  ON CONFLICT (city, street, zipcode)
@@ -21,7 +22,7 @@ export class pg_query_handler {
             const mailingAddressId = mailingAddressResult.rows[0].id;
         
             // Insert regional area (handle conflict on number)
-            const regionalAreaResult = await this.client.query(
+            const regionalAreaResult = await this.st_client.query(
                 `INSERT INTO regional_areas (number, name, short_name)
                  VALUES ($1, $2, $3)
                  ON CONFLICT (number)
@@ -32,7 +33,7 @@ export class pg_query_handler {
             const regionalAreaId = regionalAreaResult.rows[0].id;
         
             // Insert task carrier (handle conflict on short_name)
-            const taskCarrierResult = await this.client.query(
+            const taskCarrierResult = await this.st_client.query(
                 `INSERT INTO task_carriers (short_name, name)
                  VALUES ($1, $2)
                  ON CONFLICT (short_name)
@@ -43,7 +44,7 @@ export class pg_query_handler {
             const taskCarrierId = taskCarrierResult.rows[0].id;
         
             // Insert time table office (handle conflict on email)
-            const timeTableOfficeResult = await this.client.query(
+            const timeTableOfficeResult = await this.st_client.query(
                 `INSERT INTO time_table_offices (email, name)
                  VALUES ($1, $2)
                  ON CONFLICT (name)
@@ -54,7 +55,7 @@ export class pg_query_handler {
             const timeTableOfficeId = timeTableOfficeResult.rows[0].id;
         
             // Insert SZentrale (handle conflict on number)
-            const szentraleResult = await this.client.query(
+            const szentraleResult = await this.st_client.query(
                 `INSERT INTO szentrale (number, public_phone_number, name)
                  VALUES ($1, $2, $3)
                  ON CONFLICT (number)
@@ -65,7 +66,7 @@ export class pg_query_handler {
             const szentraleId = szentraleResult.rows[0].id;
         
             // Insert station management (handle conflict on number)
-            const stationManagementResult = await this.client.query(
+            const stationManagementResult = await this.st_client.query(
                 `INSERT INTO station_management (number, name)
                  VALUES ($1, $2)
                  ON CONFLICT (number)
@@ -76,7 +77,7 @@ export class pg_query_handler {
             const stationManagementId = stationManagementResult.rows[0].id;
         
             // Insert station (handle conflict on number)
-            const stationResult = await this.client.query(
+            const stationResult = await this.st_client.query(
                 `INSERT INTO stations (
                     number, ifopt, name, category, price_category, has_parking, has_bicycle_parking,
                     has_local_public_transport, has_public_facilities, has_locker_system, has_taxi_rank,
@@ -134,7 +135,7 @@ export class pg_query_handler {
         
             // Insert EVA numbers (handle conflict on station_id and number)
             for (const evaNumber of stationData.evaNumbers) {
-                await this.client.query(
+                await this.st_client.query(
                     `INSERT INTO eva_numbers (station_id, number, is_main, latitude, longitude)
                      VALUES ($1, $2, $3, $4, $5)
                      ON CONFLICT (number)
@@ -145,7 +146,7 @@ export class pg_query_handler {
         
             // Insert RIL100 identifiers (handle conflict on station_id and ril_identifier)
             for (const ril100 of stationData.ril100Identifiers) {
-                await this.client.query(
+                await this.st_client.query(
                     `INSERT INTO ril100_identifiers (
                         station_id, ril_identifier, is_main, has_steam_permission, steam_permission,
                         latitude, longitude, primary_location_code
@@ -168,13 +169,13 @@ export class pg_query_handler {
                 );
             }
         
-            await this.client.query('COMMIT');
+            await this.st_client.query('COMMIT');
         } catch (error) {
-            await this.client.query('ROLLBACK');
+            await this.st_client.query('ROLLBACK');
             console.error('Error inserting data:', error);
             throw error;
         } finally {
-            // this.client.release();
+            // this.st_client.release();
         }
     }
 
@@ -190,7 +191,7 @@ export class pg_query_handler {
         } catch (error) {
             console.error('Error storing data:', error.message);
         } finally {
-            // this.client.release();
+            // this.st_client.release();
         }
     }
     
@@ -205,7 +206,7 @@ export class pg_query_handler {
             max_category = 5
         }
         try{
-            const result = await this.client.query(`select 
+            const result = await this.st_client.query(`select 
                 (select en.number 
                 from eva_numbers en 
                 where en.station_id = s.id and en.is_main is true 
