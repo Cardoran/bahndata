@@ -196,6 +196,9 @@ export class pg_query_handler {
     }
     
     async store_timetable(tt_data) {
+        if (!tt_data) {
+            return;
+        }
         console.log("db store data", tt_data["timetable"]);
         console.log("db store data", tt_data.timetable.station);
         try {
