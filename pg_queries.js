@@ -179,7 +179,7 @@ export class pg_query_handler {
         }
     }
 
-    // Function to store data in PostgreSQL
+    // Function to store station data in PostgreSQL
     async storeStationData(data) {
         // const client = await pool.connect();
         try {
@@ -195,8 +195,31 @@ export class pg_query_handler {
         }
     }
     
-    async store_timetable(tt) {
-        console.log("db store data", tt);
+    async store_timetable(tt_data) {
+        console.log("db store data", tt_data);
+        try {
+            await this.tt_client.query('BEGIN');
+        
+            // Insert station eva and name (handle conflict on eva_number)
+            const station_result = await this.tt_client.query(
+                `INSERT INTO stations (eva_number, station_name)
+                 VALUES ($1, $2)
+                 ON CONFLICT (eva_number)
+                 DO NOTHING
+                 RETURNING id`,
+                [tt_data.$.eva, tt_data.$.station]
+            );
+            const station_id = station_result.rows[0].id;
+
+
+            await this.tt_client.query('COMMIT');
+        } catch (error) {
+            await this.tt_client.query('ROLLBACK');
+            console.error('Error inserting data:', error);
+            throw error;
+        } finally {
+            // this.tt_client.release();
+        }
     }
 
     // pulls from database

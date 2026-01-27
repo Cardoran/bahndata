@@ -15,7 +15,7 @@ const apiHeaders = {
   'Accept': 'application/json',
 };
 
-// PostgreSQL connection pool
+// PostgreSQL connection pools
 const stations_pool = new Pool({
   user: 'bahn_miner',
   host: '192.168.178.40',
@@ -23,9 +23,17 @@ const stations_pool = new Pool({
   password: 'bahn_miner_password',
   port: 5432,
 });
+const timetable_pool = new Pool({
+  user: 'bahn_miner',
+  host: '192.168.178.40',
+  database: 'departures_long_distance_stops',
+  password: 'bahn_miner_password',
+  port: 5432,
+});
 
-const client = await stations_pool.connect();
-const pgq = new pg_query_handler(client);
+const stations_client = await stations_pool.connect();
+const timetable_client = await timetable_pool.connect();
+const pgq = new pg_query_handler(stations_client, timetable_client);
 const miner = new miner_coordinator(apiHeaders, pgq);
 miner.run()
 
@@ -56,6 +64,7 @@ process.on('SIGTERM', () => {
   server.close(() => {
     console.log('Server closed.');
     stations_pool.end(); // Close the PostgreSQL connection pool
+    timetable_pool.end(); // Close the PostgreSQL connection pool
     process.exit(0);
   });
 });
