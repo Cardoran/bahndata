@@ -221,9 +221,9 @@ export class pg_query_handler {
                 )
                 SELECT id FROM res
                     UNION ALL
-                SELECT id FROM stations WHERE station_name=$1
+                SELECT id FROM stations WHERE station_name=$3
                 LIMIT 1`,
-                [keyslist, valueslist]
+                [keyslist, valueslist, tt_data.timetable.station]
             );
             const station_id = station_result.rows[0].id;
             console.log("stored data to:", station_id);
