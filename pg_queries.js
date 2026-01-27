@@ -216,8 +216,8 @@ export class pg_query_handler {
             // Insert station eva and name (handle conflict on station_name)
             const station_result = await this.tt_client.query(
                 `WITH res as (
-                    INSERT INTO stations ${keyslist} 
-                        VALUES ${valueslist}
+                    INSERT INTO stations (station_name) 
+                        VALUES $1
                         ON CONFLICT (station_name) DO NOTHING
                         RETURNING id
                 )
