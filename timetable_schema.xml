@@ -1,0 +1,147 @@
+timetable object
+    "eva", eva station number, integer
+    "m", message, array
+        "c", Code, integer
+        "cat", category, string
+        "del", deleted, integer
+        "dm", distributor message, array
+            "int", internal text, string
+            "n", distributor name", string
+            "t", distributor type, string enum: s-city, r-region, f-long-distance, x-other
+            "ts", timestamp 'YYMMddHHmm', string
+        "ec", external category, string
+        "elnk", external link, string
+        "ext", external text, string
+        "from", valid from time 'YYMMddHHmm', string
+        "id", message id, string
+        "int", internal text, string
+        "o", owner, string
+        "pr", priority, string enum: 1-high, 2-medium, 3-low, 4-done
+        "t", message status, string enum: h,q,f,d,i,u,r,c "h - HIM\n  A HIM message (generated through the Hafas Information Manager).\n* q - QUALITY CHANGE\n  A message about a quality change.\n* f - FREE\n  A free text message.\n* d - CAUSE OF DELAY\n  A message about the cause of a delay.\n* i - IBIS\n  An IBIS message (generated from IRIS-AP).\n* u - UNASSIGNED IBIS MESSAGE\n  An IBIS message (generated from IRIS-AP) not yet assigned to a train.\n* r - DISRUPTION\n  A major disruption.\n* c - CONNECTION\n  A connection.\n"
+        "tl", trip label, array
+            "c", category e.g. ICE or RE, string
+            "f", filter flags, string
+            "n", train/trip number e.g. 4523, string
+            "o", owner short-form for evu, string
+            "t", trip type, string enum: p,e,z,s,h,n
+          "required": [
+            "c",
+            "n",
+            "o"
+          ]
+        "to", valid to time 'YYMMddHHmm', string
+        "ts", timestamp 'YYMMddHHmm', string
+      "required": [
+          "id",
+          "t",
+          "ts"
+      ]
+    "s", list of stops, array
+        "ar", arrival event, object
+            "cde", changed distant endpoint, string
+            "clt", cancellation time 'YYMMddHHmm', string
+            "cp", changed platform, string
+            "cpth", changed path, string
+            "cs", event status, object enum: p-planned, a-added, c-cancelled
+            "ct", changed time 'YYMMddHHmm', string
+            "dc", distant change, integer
+            "fb", unlisted line name e.g. RB75, string
+            "hi", hidden, integer: 1 if not to be shown to passengers
+            "l", line indicator, string: 3 for s-bahn, 45s for bus
+            "m", list of messages, array
+                see #/properties/m/items
+            "pde", planned distant endpoint, string
+            "pp", planned platform, string
+            "ppth", planned path: list separated by '|', string
+            "ps", see #/properties/s/items/properties/ar/properties/cs
+            "pt", planned time 'YYMMddHHmm', string
+            "tra", transition: trip id of next of previous train, string
+            "wings", wing: sequence of trip ids separated by '|', string
+        "conn", connection element, array
+            "cs", connection status, string enum: w-waiting, n-transition, a-alternative
+            "eva", eva number, integer
+            "id", id, string
+            "ref", see #/properties/s/items
+            "s", see #/properties/s/items
+            "ts", time stamp YYMMddHHmm, string
+          "required": [
+                "cs",
+                "id",
+                "s",
+                "ts"
+          ]
+        "dp", departure event, object
+            see #/properties/s/items/properties/ar"
+        "eva", eva of this stip, integer
+        "hd", historic delay, array
+            "ar", arrival event YYMMddHHmm, string
+            "cod", cause of delay, string
+            "dp", departure event YYMMddHHmm, string
+            "src", delay source, string enum: L, NA, NM, V, IA, IM, A: L - LEIBIT\n  LeiBit/LeiDis.\n* NA - RISNE AUT\n  IRIS-NE (automatisch).\n* NM - RISNE MAN\n  IRIS-NE (manuell).\n* V - VDV\n  Prognosen durch dritte EVU �ber VDVin.\n* IA - ISTP AUT\n  ISTP automatisch.\n* IM - ISTP MAN\n  ISTP manuell.\n* A - AUTOMATIC PROGNOSIS\n  Automatische Prognose durch Prognoseautomat.\n
+            "ts", time stamp YYMMddHHmm, string
+        "hpc", historic platform change, array
+            "ar", arrival platform, string
+            "cot", cause of track change, string
+            "dp", departure platform, string
+            "ts", time stamp YYMMddHHmm, string
+        "id", unique id of stop: unique daily id-(YYMMdd)-index of stop (added above 100), string
+        "m", message element, array
+            see #/properties/m/items
+        "ref", reference to another trip, object
+            "rt", reference trip elements, array
+                see #/properties/m/items/properties/tl/items
+            "tl", see #/properties/m/items/properties/tl/items
+          "required": [
+              "tl"
+          ]
+        "rtr", reference trip relation element, array
+            "rt", reference trip, object
+                "c", cancellation flag, boolean
+                "ea", contains data that characterizes reference trip stops, object
+                    "eva", eva of the correspondent stop, integer
+                    "i", index of correspondent stop, integer
+                    "n", name of correspondent stop, string
+                    "pt", planned time of correspondent stop, string
+                  "required": [
+                    "eva",
+                    "i",
+                    "n",
+                    "pt"
+                  ]
+                "id", unique id of reference trip: unique daily id-YYMMddHHmm, string
+                "rtl", contains data that characterizes reference trip, object
+                    "c", category e.g. ICE or RE, string
+                    "n", trip/train number e.g. 4523
+                  "required": [
+                    "c",
+                    "n"
+                  ]
+                "sd", see #/properties/s/items/properties/rtr/items/properties/rt/properties/ea
+              "required": [
+                    "c",
+                    "ea",
+                    "id",
+                    "rtl",
+                    "sd"
+              ]
+            "rts", referece trip relation to the stop, string enum: b-before, e-ends, c-between, s-starts, a-after
+          "required": [
+                "rt",
+                "rts"
+          ]
+        "tl", trip label, array
+            "c", category e.g. ICE or RE, string
+            "f", filter flags, string
+            "n", train/trip number e.g. 4523, string
+            "o", owner short-form for evu, string
+            "t", trip type, string enum: p,e,z,s,h,n
+          "required": [
+            "c",
+            "n",
+            "o"
+          ]
+      "required": [
+          "eva",
+          "id"
+      ]
+    "station", station name, string
