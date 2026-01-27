@@ -199,8 +199,10 @@ export class pg_query_handler {
         if (tt_data.timetable == '') {
             return;
         }
-        console.log("db store data", tt_data);
-        console.log("db store data", tt_data.timetable.station);
+        for (const [key, value] of Object.entries(tt_data)) {
+            console.log(key);
+        }
+        
         try {
             await this.tt_client.query('BEGIN');
         
