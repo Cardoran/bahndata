@@ -217,7 +217,7 @@ export class pg_query_handler {
             const station_result = await this.tt_client.query(
                 `WITH res as (
                     INSERT INTO stations (station_name) 
-                        VALUES $1
+                        VALUES($1)
                         ON CONFLICT (station_name) DO NOTHING
                         RETURNING id
                 )
