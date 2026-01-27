@@ -41,8 +41,9 @@ if __name__ == "__main__":
                 "DB-Client-Id": "2b83a09f021fad54d68cc31e3b5e03e2",
             }
     xml = get_timetable_xml(api_auth, 8000068)
-    datadict = xmltodict.parse(xml)["timetable"]
-    print(datadict.keys())
-    print(datadict["@station"])
-    for s in datadict["s"]:
-        print(s)
+    print(xml)
+    # datadict = xmltodict.parse(xml)["timetable"]
+    # print(datadict.keys())
+    # print(datadict["@station"])
+    # for s in datadict["s"]:
+    #     print(s)

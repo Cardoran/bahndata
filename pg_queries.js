@@ -196,21 +196,21 @@ export class pg_query_handler {
     }
     
     async store_timetable(tt_data) {
-        console.log("db store data", tt_data);
+        // console.log("db store data", tt_data);
         try {
             await this.tt_client.query('BEGIN');
         
             // Insert station eva and name (handle conflict on station_name)
             const station_result = await this.tt_client.query(
-                `INSERT INTO stations (eva_number, station_name)
-                 VALUES ($1, $2)
+                `INSERT INTO stations (station_name)
+                 VALUES ($1)
                  ON CONFLICT (station_name)
                  DO NOTHING
                  RETURNING id`,
-                [tt_data.$.eva, tt_data.$.station]
+                [tt_data.$.station]
             );
             const station_id = station_result.rows[0].id;
-
+            console.log("stored data to:", station_id);
 
             await this.tt_client.query('COMMIT');
         } catch (error) {
