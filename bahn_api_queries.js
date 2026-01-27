@@ -46,7 +46,7 @@ export async function getTimetableXml(api_auth_headers, evaNr, date = null) {
 
 async function parseXml(xml) {
     try {
-        const parser = new xml2js.Parser({ explicitArray: false, explicitChildren: true });
+        const parser = new xml2js.Parser({ explicitArray: false, mergeAttrs: true });
         const result = await parser.parseStringPromise(xml);
         // console.log('XML Result:', xml);
         // console.log('JSON Result:', result.timetable.s);
