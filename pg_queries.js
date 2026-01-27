@@ -207,7 +207,7 @@ export class pg_query_handler {
                  ON CONFLICT (station_name)
                  DO NOTHING
                  RETURNING id`,
-                [tt_data.$.station]
+                [tt_data.timetable.station]
             );
             const station_id = station_result.rows[0].id;
             console.log("stored data to:", station_id);
