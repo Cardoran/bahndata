@@ -206,8 +206,8 @@ export class pg_query_handler {
                 `INSERT INTO stations (station_name)
                  VALUES ($1)
                  ON CONFLICT (station_name)
-                 DO UPDATE SET station_name = EXCLUDED
-                 RETURNING old.id`,
+                 DO RETURNING old.id
+                 RETURNING id`,
                 [tt_data.timetable.station]
             );
             const station_id = station_result.rows[0].id;
