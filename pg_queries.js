@@ -196,7 +196,7 @@ export class pg_query_handler {
     }
     
     async store_timetable(tt_data) {
-        // console.log("db store data", tt_data);
+        console.log("db store data", tt_data.timetable.station);
         try {
             await this.tt_client.query('BEGIN');
         
