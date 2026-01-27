@@ -202,15 +202,20 @@ export class pg_query_handler {
         for (const [key, value] of Object.entries(tt_data)) {
             console.log(key);
         }
+
+        station_keys = {station: "station_name", eva: "eva_number"};
+        const station_subset = Object.entries(station_keys).filter(el => Object.hasOwn(tt_data.timetable, el[0]))
         
+        const keyslist = `(${station_subset.map(el => el[1]).join(', ')})`;
+        const valueslist = `(${station_subset.map(el => tt_data.timetable[el[0]]).join(', ')})`;
         try {
             await this.tt_client.query('BEGIN');
         
             // Insert station eva and name (handle conflict on station_name)
             const station_result = await this.tt_client.query(
                 `WITH res as (
-                    INSERT INTO stations (station_name) 
-                        VALUES($1)
+                    INSERT INTO stations $1 
+                        VALUES $2
                         ON CONFLICT (station_name) DO NOTHING
                         RETURNING id
                 )
@@ -218,7 +223,7 @@ export class pg_query_handler {
                     UNION ALL
                 SELECT id FROM stations WHERE station_name=$1
                 LIMIT 1`,
-                [tt_data.timetable.station]
+                [keyslist, valueslist]
             );
             const station_id = station_result.rows[0].id;
             console.log("stored data to:", station_id);
