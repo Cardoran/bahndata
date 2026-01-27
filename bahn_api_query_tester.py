@@ -40,10 +40,11 @@ if __name__ == "__main__":
                 "DB-Api-Key": "235a6da868e721b3ed0f8915d17759fb",
                 "DB-Client-Id": "2b83a09f021fad54d68cc31e3b5e03e2",
             }
-    xml = get_timetable_xml(api_auth, 8000068)
+    xml = get_timetable_xml(api_auth, 8080040)
     print(xml)
-    # datadict = xmltodict.parse(xml)["timetable"]
-    # print(datadict.keys())
-    # print(datadict["@station"])
-    # for s in datadict["s"]:
-    #     print(s)
+    datadict = xmltodict.parse(xml, attr_prefix='')["timetable"]
+    print(datadict)
+    print(datadict.keys())
+    print(datadict["station"])
+    for s in datadict["s"]:
+        print(s)
