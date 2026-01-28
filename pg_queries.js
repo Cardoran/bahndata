@@ -320,10 +320,10 @@ export class pg_query_handler {
                     if (Array.isArray(data[key])){
                         for (const d of data[key]) {
                             console.log("array element");
-                            await this.insert_data(key, d, table_key, row_id);
+                            await this.insert_data(key, d, table_names[table_key], row_id);
                         }
                     } else {
-                        await this.insert_data(key, data[key], table_key, row_id);
+                        await this.insert_data(key, data[key], table_names[table_key], row_id);
                     }
                 }
             }
