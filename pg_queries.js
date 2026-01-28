@@ -260,7 +260,7 @@ export class pg_query_handler {
 
     insert_data(table_key, data, parent, ref_id) {
         try{
-            keys = table_dicts[table_key];
+            const keys = table_dicts[table_key];
             console.log(table_key);
             const subset = Object.entries(keys).filter(el => Object.hasOwn(data, el[0]))
             if (parent && ref_id) {
