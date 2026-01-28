@@ -303,18 +303,19 @@ export class pg_query_handler {
                 row_id = result.rows[0].id;
             }
 
-
-            for (const key of subtable_keys[table_key]) {
-                if (data[key] == '' || !data[key]) {
-                    continue;
-                }
-                if (Array.isArray(data[key])){
-                    for (const d of data[key]) {
-                        console.log("array element");
-                        await this.insert_data(key, d, table_key, row_id);
+            if (subtable_keys[table_key]) {
+                for (const key of subtable_keys[table_key]) {
+                    if (data[key] == '' || !data[key]) {
+                        continue;
                     }
-                } else {
-                    await this.insert_data(key, data[key], table_key, row_id);
+                    if (Array.isArray(data[key])){
+                        for (const d of data[key]) {
+                            console.log("array element");
+                            await this.insert_data(key, d, table_key, row_id);
+                        }
+                    } else {
+                        await this.insert_data(key, data[key], table_key, row_id);
+                    }
                 }
             }
         }
