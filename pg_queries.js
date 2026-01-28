@@ -272,6 +272,9 @@ export class pg_query_handler {
             const table_name = table_names[table_key];
             const unique_key = table_unique[table_key];
             const unique_value = data[unique_key[1]];
+            
+            console.log(keyslist);
+            console.log(valueslist);
 
             // Insert data (handle conflict on unique element)
             const result = this.tt_client.query(
@@ -288,7 +291,7 @@ export class pg_query_handler {
             );
             const row_id = result.rows[0].id;
 
-            for (key of subtable_keys[table_key]) {
+            for (const key of subtable_keys[table_key]) {
                 this.insert_data(key, data[key], table_key, row_id);
             }
         }
