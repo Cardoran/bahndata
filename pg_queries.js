@@ -218,13 +218,13 @@ export class pg_query_handler {
             const station_result = await this.tt_client.query(
                 `WITH res as (
                     INSERT INTO stations ${keyslist}
-                        VALUES${valueslist}
+                        VALUES("Aachen Hbf")
                         ON CONFLICT (station_name) DO NOTHING
                         RETURNING id
                 )
                 SELECT id FROM res
-                    --UNION ALL
-                --SELECT id FROM stations WHERE station_name=$1
+                    UNION ALL
+                SELECT id FROM stations WHERE station_name=$1
                 LIMIT 1`,
                 [tt_data.timetable.station]
             );
