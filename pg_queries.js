@@ -264,18 +264,16 @@ export class pg_query_handler {
             console.log(parent, ref_id);
             const subset = Object.entries(keys).filter(el => Object.hasOwn(data, el[0]))
 
-            var keyslist = subset.map(el => el[1]);
-            var valueslist = subset.map(el => data[el[0]]);
+            const keyslist = subset.map(el => el[1]);
+            const valueslist = subset.map(el => data[el[0]]);
+            var keys_string = `${keyslist.join(', ')}`;
+            var values_string = `'${valueslist.join('\', \'')}'`;
 
             if (parent) {
-                console.log("parent found!");
-                keyslist.push(`${parent}_id`);
-                valueslist.push(ref_id);
-                console.log(subset);
+                keys_string += `, '${parent}_id'`;
+                values_string += `, ref_id`;
             }
             
-            const keys_string = `(${keyslist.join(', ')})`;
-            const values_string = `('${valueslist.join('\', \'')}')`;
             console.log(keys_string);
             console.log(values_string);
 
@@ -286,8 +284,8 @@ export class pg_query_handler {
                 const unique_value = `'${data[unique_key[0]]}'`;
                 // Insert data (handle conflict on unique element)
                 const result = await this.tt_client.query(
-                    `INSERT INTO ${table_name} ${keys_string}
-                        VALUES${values_string}
+                    `INSERT INTO ${table_name} (${keys_string})
+                        VALUES(${values_string})
                     ON CONFLICT (${unique_key[1]}) DO NOTHING
                     RETURNING id`
                 );
@@ -309,8 +307,8 @@ export class pg_query_handler {
             } else {
                 // Insert data (handle conflict on unique element)
                 const result = await this.tt_client.query(
-                    `INSERT INTO ${table_name} ${keys_string}
-                        VALUES${values_string}
+                    `INSERT INTO ${table_name} (${keys_string})
+                        VALUES(${values_string})
                     LIMIT 1
                     RETURNING id`
                 );
