@@ -292,7 +292,7 @@ export class pg_query_handler {
             const row_id = result.rows[0].id;
 
             for (const key of subtable_keys[table_key]) {
-                if (data[key] == '') {
+                if (data[key] == '' || !data[key]) {
                     continue;
                 }
                 console.log(data[key]);
