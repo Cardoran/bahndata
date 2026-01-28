@@ -274,34 +274,41 @@ export class pg_query_handler {
             console.log(valueslist);
 
             const table_name = table_names[table_key];
-            const unique_key = table_unique[table_key];
-            var row_id = 0;
-            if (unique_key) {
-                const unique_value = `'${data[unique_key[0]]}'`;
-                // Insert data (handle conflict on unique element)
-                const result = await this.tt_client.query(
-                    `WITH res as (
-                        INSERT INTO ${table_name} ${keyslist}
-                            VALUES${valueslist}
-                            ON CONFLICT (${unique_key[1]}) DO NOTHING
-                            RETURNING id
-                    )
-                    SELECT id FROM res
-                        UNION ALL
-                    SELECT id FROM ${table_name} WHERE ${unique_key[1]}=${unique_value}
-                    LIMIT 1`
-                );
-                row_id = result.rows[0].id;
-            } else {
-                // Insert data (handle conflict on unique element)
-                const result = await this.tt_client.query(
-                    `INSERT INTO ${table_name} ${keyslist}
-                        VALUES${valueslist}
-                    LIMIT 1
-                    RETURNING id`
-                );
-                row_id = result.rows[0].id;
-            }
+            // const unique_key = table_unique[table_key];
+            const result = await this.tt_client.query(
+                `INSERT INTO ${table_name} ${keyslist}
+                    VALUES${valueslist}
+                LIMIT 1
+                RETURNING id`
+            );
+            const row_id = result.rows[0].id;
+            // var row_id = 0;
+            // if (unique_key) {
+            //     const unique_value = `'${data[unique_key[0]]}'`;
+            //     // Insert data (handle conflict on unique element)
+            //     const result = await this.tt_client.query(
+            //         `WITH res as (
+            //             INSERT INTO ${table_name} ${keyslist}
+            //                 VALUES${valueslist}
+            //                 ON CONFLICT (${unique_key[1]}) DO NOTHING
+            //                 RETURNING id
+            //         )
+            //         SELECT id FROM res
+            //             UNION ALL
+            //         SELECT id FROM ${table_name} WHERE ${unique_key[1]}=${unique_value}
+            //         LIMIT 1`
+            //     );
+            //     row_id = result.rows[0].id;
+            // } else {
+            //     // Insert data (handle conflict on unique element)
+            //     const result = await this.tt_client.query(
+            //         `INSERT INTO ${table_name} ${keyslist}
+            //             VALUES${valueslist}
+            //         LIMIT 1
+            //         RETURNING id`
+            //     );
+            //     row_id = result.rows[0].id;
+            // }
 
             if (subtable_keys[table_key]) {
                 for (const key of subtable_keys[table_key]) {
