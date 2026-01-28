@@ -258,17 +258,20 @@ export class pg_query_handler {
         }
     }
 
-    insert_data(table_key, data, ref_id) {
+    insert_data(table_key, data, parent, ref_id) {
         try{
             keys = table_dicts[table_key];
             console.log(table_key);
             const subset = Object.entries(keys).filter(el => Object.hasOwn(data, el[0]))
+            if (parent && ref_id) {
+                subset[`${parent}_id`] = ref_id;
+            }
             
             const keyslist = `(${subset.map(el => el[1]).join(', ')})`;
             const valueslist = `('${subset.map(el => data[el[0]]).join('\', \'')}')`;
             const table_name = table_names[table_key];
             const unique_key = table_unique[table_key];
-            const unique_value = data[unique_key[1]]
+            const unique_value = data[unique_key[1]];
 
             // Insert data (handle conflict on unique element)
             const result = this.tt_client.query(
@@ -286,7 +289,7 @@ export class pg_query_handler {
             const row_id = result.rows[0].id;
 
             for (key of subtable_keys[table_key]) {
-                this.insert_data(key, data[key], row_id);
+                this.insert_data(key, data[key], table_key, row_id);
             }
         }
         catch (error) {
