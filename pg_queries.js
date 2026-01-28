@@ -266,6 +266,7 @@ export class pg_query_handler {
             if (parent) {
                 console.log("parent found!");
                 subset[`${parent}_id`] = ref_id;
+                console.log(subset);
             }
             
             const keyslist = `(${subset.map(el => el[1]).join(', ')})`;
