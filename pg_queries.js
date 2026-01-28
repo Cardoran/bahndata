@@ -295,7 +295,7 @@ export class pg_query_handler {
                 if (data[key] == '' || !data[key]) {
                     continue;
                 }
-                if (data[key] === Array){
+                if (Array.isArray(data[key])){
                     for (const d of data[key]) {
                         await this.insert_data(key, d, table_key, row_id);
                     }
