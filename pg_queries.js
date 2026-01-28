@@ -264,8 +264,8 @@ export class pg_query_handler {
             console.log(parent, ref_id);
             const subset = Object.entries(keys).filter(el => Object.hasOwn(data, el[0]))
 
-            var keyslist = `(${subset.map(el => el[1]).join(', ')})`;
-            var valueslist = `('${subset.map(el => data[el[0]]).join('\', \'')}')`;
+            var keyslist = subset.map(el => el[1]);
+            var valueslist = subset.map(el => data[el[0]]);
 
             if (parent) {
                 console.log("parent found!");
@@ -274,8 +274,8 @@ export class pg_query_handler {
                 console.log(subset);
             }
             
-            const keys_string = `(${subset.map(el => el[1]).join(', ')})`;
-            const values_string = `('${subset.map(el => data[el[0]]).join('\', \'')}')`;
+            const keys_string = `(${keyslist.join(', ')})`;
+            const values_string = `('${valueslist.join('\', \'')}')`;
             console.log(keys_string);
             console.log(values_string);
 
