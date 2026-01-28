@@ -275,6 +275,7 @@ export class pg_query_handler {
 
             const table_name = table_names[table_key];
             const unique_key = table_unique[table_key];
+            var row_id = 0;
             if (unique_key) {
                 const unique_value = `'${data[unique_key[0]]}'`;
                 // Insert data (handle conflict on unique element)
@@ -290,6 +291,7 @@ export class pg_query_handler {
                     SELECT id FROM ${table_name} WHERE ${unique_key[1]}=${unique_value}
                     LIMIT 1`
                 );
+                row_id = result.rows[0].id;
             } else {
                 // Insert data (handle conflict on unique element)
                 const result = await this.tt_client.query(
@@ -298,9 +300,9 @@ export class pg_query_handler {
                     RETURNING id
                     LIMIT 1`
                 );
+                row_id = result.rows[0].id;
             }
 
-            const row_id = result.rows[0].id;
 
             for (const key of subtable_keys[table_key]) {
                 if (data[key] == '' || !data[key]) {
