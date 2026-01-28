@@ -223,8 +223,8 @@ export class pg_query_handler {
                         RETURNING id
                 )
                 SELECT id FROM res
-                    UNION ALL
-                SELECT id FROM stations WHERE station_name=$1
+                    --UNION ALL
+                --SELECT id FROM stations WHERE station_name=$1
                 LIMIT 1`,
                 [tt_data.timetable.station]
             );
