@@ -281,7 +281,7 @@ export class pg_query_handler {
                 ON CONFLICT (${unique_key[1]}) DO NOTHING
                 RETURNING id`
             );
-            if (!result.rows) {
+            if (!result.rows[0]) {
                 return;
             }
             const row_id = result.rows[0].id;
