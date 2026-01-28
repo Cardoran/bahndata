@@ -271,7 +271,7 @@ export class pg_query_handler {
 
             if (parent) {
                 keys_string += `, ${parent}_id`;
-                values_string += `, ref_id`;
+                values_string += `, ${ref_id}`;
             }
             
             console.log(keys_string);
