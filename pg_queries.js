@@ -295,8 +295,13 @@ export class pg_query_handler {
                 if (data[key] == '' || !data[key]) {
                     continue;
                 }
-                console.log(data[key]);
-                await this.insert_data(key, data[key], table_key, row_id);
+                if (data[key] === Array){
+                    for (const d of data[key]) {
+                        await this.insert_data(key, d, table_key, row_id);
+                    }
+                } else {
+                    await this.insert_data(key, data[key], table_key, row_id);
+                }
             }
         }
         catch (error) {
