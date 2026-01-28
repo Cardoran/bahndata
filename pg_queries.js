@@ -271,7 +271,7 @@ export class pg_query_handler {
             const valueslist = `('${subset.map(el => data[el[0]]).join('\', \'')}')`;
             const table_name = table_names[table_key];
             const unique_key = table_unique[table_key];
-            const unique_value = data[unique_key[0]];
+            const unique_value = `'${data[unique_key[0]]}'`;
             
             console.log(keyslist);
             console.log(valueslist);
