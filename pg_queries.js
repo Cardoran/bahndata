@@ -265,7 +265,7 @@ export class pg_query_handler {
             var subset = Object.entries(keys).filter(el => Object.hasOwn(data, el[0]))
             if (parent) {
                 console.log("parent found!");
-                subset[`${parent}_id`] = ref_id;
+                subset.push([`${parent}_id`, ref_id]);
                 console.log(subset);
             }
             
