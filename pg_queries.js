@@ -269,6 +269,10 @@ export class pg_query_handler {
             var keys_string = `${keyslist.join(', ')}`;
             var values_string = `'${valueslist.join('\', \'')}'`;
 
+            if (table_key == 'ar' || table_key == 'dp') {
+                keys_string += `, type`;
+                values_string += `, '${table_key}'`;
+            }
             if (parent) {
                 keys_string += `, ${parent}_id`;
                 values_string += `, ${ref_id}`;
