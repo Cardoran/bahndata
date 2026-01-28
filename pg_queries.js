@@ -274,13 +274,17 @@ export class pg_query_handler {
             console.log(valueslist);
 
             const table_name = table_names[table_key];
-            // const unique_key = table_unique[table_key];
+            const unique_key = table_unique[table_key];
             const result = await this.tt_client.query(
                 `INSERT INTO ${table_name} ${keyslist}
                     VALUES${valueslist}
+                ON CONFLICT (${unique_key[1]}) DO NOTHING
                 LIMIT 1
                 RETURNING id`
             );
+            if (!result.rows) {
+                return;
+            }
             const row_id = result.rows[0].id;
             // var row_id = 0;
             // if (unique_key) {
