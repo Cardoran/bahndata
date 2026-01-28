@@ -297,8 +297,8 @@ export class pg_query_handler {
                 const result = await this.tt_client.query(
                     `INSERT INTO ${table_name} ${keyslist}
                         VALUES${valueslist}
-                    RETURNING id
-                    LIMIT 1`
+                    LIMIT 1
+                    RETURNING id`
                 );
                 row_id = result.rows[0].id;
             }
