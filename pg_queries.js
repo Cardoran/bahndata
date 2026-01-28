@@ -269,26 +269,38 @@ export class pg_query_handler {
             
             const keyslist = `(${subset.map(el => el[1]).join(', ')})`;
             const valueslist = `('${subset.map(el => data[el[0]]).join('\', \'')}')`;
-            const table_name = table_names[table_key];
-            const unique_key = table_unique[table_key];
-            const unique_value = `'${data[unique_key[0]]}'`;
             
             console.log(keyslist);
             console.log(valueslist);
 
-            // Insert data (handle conflict on unique element)
-            const result = await this.tt_client.query(
-                `WITH res as (
-                    INSERT INTO ${table_name} ${keyslist}
+            const table_name = table_names[table_key];
+            const unique_key = table_unique[table_key];
+            const result = null;
+            if (unique_key) {
+                const unique_value = `'${data[unique_key[0]]}'`;
+                // Insert data (handle conflict on unique element)
+                result = await this.tt_client.query(
+                    `WITH res as (
+                        INSERT INTO ${table_name} ${keyslist}
+                            VALUES${valueslist}
+                            ON CONFLICT (${unique_key[1]}) DO NOTHING
+                            RETURNING id
+                    )
+                    SELECT id FROM res
+                        UNION ALL
+                    SELECT id FROM ${table_name} WHERE ${unique_key[1]}=${unique_value}
+                    LIMIT 1`
+                );
+            } else {
+                // Insert data (handle conflict on unique element)
+                result = await this.tt_client.query(
+                    `INSERT INTO ${table_name} ${keyslist}
                         VALUES${valueslist}
-                        ON CONFLICT (${unique_key[1]}) DO NOTHING
-                        RETURNING id
-                )
-                SELECT id FROM res
-                    UNION ALL
-                SELECT id FROM ${table_name} WHERE ${unique_key[1]}=${unique_value}
-                LIMIT 1`
-            );
+                    RETURNING id
+                    LIMIT 1`
+                );
+            }
+
             const row_id = result.rows[0].id;
 
             for (const key of subtable_keys[table_key]) {
