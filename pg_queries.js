@@ -275,11 +275,10 @@ export class pg_query_handler {
 
             const table_name = table_names[table_key];
             const unique_key = table_unique[table_key];
-            const result = null;
             if (unique_key) {
                 const unique_value = `'${data[unique_key[0]]}'`;
                 // Insert data (handle conflict on unique element)
-                result = await this.tt_client.query(
+                const result = await this.tt_client.query(
                     `WITH res as (
                         INSERT INTO ${table_name} ${keyslist}
                             VALUES${valueslist}
@@ -293,7 +292,7 @@ export class pg_query_handler {
                 );
             } else {
                 // Insert data (handle conflict on unique element)
-                result = await this.tt_client.query(
+                const result = await this.tt_client.query(
                     `INSERT INTO ${table_name} ${keyslist}
                         VALUES${valueslist}
                     RETURNING id
