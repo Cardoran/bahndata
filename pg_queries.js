@@ -295,6 +295,7 @@ export class pg_query_handler {
                 if (data[key] == '') {
                     continue;
                 }
+                console.log(data[key]);
                 await this.insert_data(key, data[key], table_key, row_id);
             }
         }
