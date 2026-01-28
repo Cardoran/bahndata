@@ -279,7 +279,6 @@ export class pg_query_handler {
                 `INSERT INTO ${table_name} ${keyslist}
                     VALUES${valueslist}
                 ON CONFLICT (${unique_key[1]}) DO NOTHING
-                LIMIT 1
                 RETURNING id`
             );
             if (!result.rows) {
