@@ -270,7 +270,7 @@ export class pg_query_handler {
             var values_string = `'${valueslist.join('\', \'')}'`;
 
             if (parent) {
-                keys_string += `, '${parent}_id'`;
+                keys_string += `, ${parent}_id`;
                 values_string += `, ref_id`;
             }
             
