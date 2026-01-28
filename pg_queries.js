@@ -1,7 +1,70 @@
+const station_keys = {
+    station: 'station_name', 
+    eva: 'eva_number'
+};
+const stop_keys = {
+    eva: 'eva', 
+    id: 'uid'
+};
+const arrival_keys = {
+    cde: 'cde', 
+    clt: 'clt', 
+    cp: 'cp', 
+    cpth: 'cpth', 
+    cs: 'cs', 
+    ct: 'ct', 
+    dc: 'dc', 
+    fb: 'fb', 
+    hi: 'hi', 
+    l: 'l', 
+    pde: 'pde', 
+    pp: 'pp', 
+    ppth: 'ppth', 
+    ps: 'ps', 
+    pt: 'pt', 
+    tra: 'tra', 
+    wings: 'wings'
+};
+const triplabel_keys = {
+    c: 'c', 
+    f: 'f', 
+    n: 'n', 
+    o: 'o', 
+    t: 't'
+};
+const subtable_keys = {
+    timetable: ['m', 's'], 
+    s: ['ar', 'tl', 'dp'],
+    ar: ['m'],
+    dp: ['m'],
+    m: ['tl']
+};
+const table_unique = {
+    timetable: ['station', 'station_name'],
+    s: ['id', 'uid'],
+    m: ['id', 'uid']
+}
+const table_dicts = {
+    timetable: station_keys, 
+    s: stop_keys, 
+    ar: arrival_keys,
+    dp: arrival_keys,
+    tl: triplabel_keys
+};
+const table_names = {
+    timetable: 'stations', 
+    s: 'stops', 
+    ar: 'arrivals',
+    dp: 'arrivals',
+    m: 'messages',
+    tl: 'triplabels'
+};
+
 export class pg_query_handler {
     constructor (stations_client, timetable_client) {
         this.st_client = stations_client;
         this.tt_client = timetable_client;
+        
     }
 
     async insertStationData(stationData) {
@@ -194,51 +257,88 @@ export class pg_query_handler {
             // this.st_client.release();
         }
     }
+
+    insert_data(table_key, data, ref_id) {
+        try{
+            keys = table_dicts[table_key];
+            console.log(table_key);
+            const subset = Object.entries(keys).filter(el => Object.hasOwn(data, el[0]))
+            
+            const keyslist = `(${subset.map(el => el[1]).join(', ')})`;
+            const valueslist = `('${subset.map(el => data[el[0]]).join('\', \'')}')`;
+            const table_name = table_names[table_key];
+            const unique_key = table_unique[table_key];
+            const unique_value = data[unique_key[1]]
+
+            // Insert data (handle conflict on unique element)
+            const result = this.tt_client.query(
+                `WITH res as (
+                    INSERT INTO ${table_name} ${keyslist}
+                        VALUES${valueslist}
+                        ON CONFLICT (${unique_key[0]}) DO NOTHING
+                        RETURNING id
+                )
+                SELECT id FROM res
+                    UNION ALL
+                SELECT id FROM ${table_name} WHERE ${unique_key[0]}=${unique_value}
+                LIMIT 1`
+            );
+            const row_id = result.rows[0].id;
+
+            for (key of subtable_keys[table_key]) {
+                this.insert_data(key, data[key], row_id);
+            }
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     
     async store_timetable(tt_data) {
         if (tt_data.timetable == '') {
             return;
         }
-        for (const [key, value] of Object.entries(tt_data)) {
-            console.log(key);
-        }
+        this.insert_data('timetable', tt_data.timetable);
+        // for (const [key, _] of Object.entries(tt_data)) {
+        //     console.log(subtable_keys[key]);
+        //     console.log(subtable_dicts[key]);
+        // }
 
-        const station_keys = {station: "station_name", eva: "eva_number"};
-        const station_subset = Object.entries(station_keys).filter(el => Object.hasOwn(tt_data.timetable, el[0]))
+        // const station_subset = Object.entries(station_keys).filter(el => Object.hasOwn(tt_data.timetable, el[0]))
         
-        const keyslist = `(${station_subset.map(el => el[1]).join(', ')})`;
-        const valueslist = `('${station_subset.map(el => tt_data.timetable[el[0]]).join('\', \'')}')`;
-        console.log(keyslist);
-        console.log(valueslist);
-        console.log(tt_data.timetable.station);
-        try {
-            await this.tt_client.query('BEGIN');
+        // const keyslist = `(${station_subset.map(el => el[1]).join(', ')})`;
+        // const valueslist = `('${station_subset.map(el => tt_data.timetable[el[0]]).join('\', \'')}')`;
+        // console.log(keyslist);
+        // console.log(valueslist);
+        // console.log(tt_data.timetable.station);
+        // try {
+        //     await this.tt_client.query('BEGIN');
         
-            // Insert station eva and name (handle conflict on station_name)
-            const station_result = await this.tt_client.query(
-                `WITH res as (
-                    INSERT INTO stations ${keyslist}
-                        VALUES${valueslist}
-                        ON CONFLICT (station_name) DO NOTHING
-                        RETURNING id
-                )
-                SELECT id FROM res
-                    UNION ALL
-                SELECT id FROM stations WHERE station_name=$1
-                LIMIT 1`,
-                [tt_data.timetable.station]
-            );
-            const station_id = station_result.rows[0].id;
-            console.log("stored data to:", station_id);
+        //     // Insert station eva and name (handle conflict on station_name)
+        //     const station_result = await this.tt_client.query(
+        //         `WITH res as (
+        //             INSERT INTO stations ${keyslist}
+        //                 VALUES${valueslist}
+        //                 ON CONFLICT (station_name) DO NOTHING
+        //                 RETURNING id
+        //         )
+        //         SELECT id FROM res
+        //             UNION ALL
+        //         SELECT id FROM stations WHERE station_name=$1
+        //         LIMIT 1`,
+        //         [tt_data.timetable.station]
+        //     );
+        //     const station_id = station_result.rows[0].id;
+        //     console.log("stored data to:", station_id);
 
-            await this.tt_client.query('COMMIT');
-        } catch (error) {
-            await this.tt_client.query('ROLLBACK');
-            console.error('Error inserting data:', error);
-            throw error;
-        } finally {
-            // this.tt_client.release();
-        }
+        //     await this.tt_client.query('COMMIT');
+        // } catch (error) {
+        //     await this.tt_client.query('ROLLBACK');
+        //     console.error('Error inserting data:', error);
+        //     throw error;
+        // } finally {
+        //     // this.tt_client.release();
+        // }
     }
 
     // pulls from database
