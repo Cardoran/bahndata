@@ -258,7 +258,7 @@ export class pg_query_handler {
         }
     }
 
-    insert_data(table_key, data, parent, ref_id) {
+    async insert_data(table_key, data, parent, ref_id) {
         try{
             const keys = table_dicts[table_key];
             console.log(table_key);
@@ -277,7 +277,7 @@ export class pg_query_handler {
             console.log(valueslist);
 
             // Insert data (handle conflict on unique element)
-            const result = this.tt_client.query(
+            const result = await this.tt_client.query(
                 `WITH res as (
                     INSERT INTO ${table_name} ${keyslist}
                         VALUES${valueslist}
