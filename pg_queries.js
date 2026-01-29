@@ -40,9 +40,9 @@ const subtable_keys = {
     m: ['tl']
 };
 const table_unique = {
-    timetable: ['station', 'station_name'],
-    s: ['id', 'uid'],
-    m: ['id', 'uid']
+    timetable: [['station'], 'station_name'],
+    s: [['uid', 't', 'n'], 'uid, t, n'],
+    m: [['id'], 'uid']
 }
 const table_dicts = {
     timetable: station_keys, 
@@ -312,7 +312,8 @@ export class pg_query_handler {
                     if (table_key == "s" || table_key == "m") {
                         return;
                     } else {
-                        const unique_value = `'${data[unique_key[0]]}'`;
+                        const unique_value = `'${unique_key[0].map(el => data[el])}'`;
+                        // const unique_value = `'${data[unique_key[0]]}'`;
                         const result2 = await this.tt_client.query(
                             `SELECT id FROM ${table_name} 
                                 WHERE ${unique_key[1]}=${unique_value}
@@ -324,7 +325,7 @@ export class pg_query_handler {
                     row_id = result.rows[0].id;
                 }
             } else {
-                // Insert data (handle conflict on unique element)
+                // Insert data when no unique key exists
                 const result = await this.tt_client.query(
                     `INSERT INTO ${table_name} (${keys_string})
                         VALUES(${values_string})
