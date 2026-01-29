@@ -15,12 +15,14 @@ CREATE TABLE stops (
 	id SERIAL PRIMARY KEY,
 	eva integer,
 	uid varchar(50),
+	t varchar(10),
+	n varchar(3),
 	stations_id integer,
 	CONSTRAINT stops_station_id_fkey FOREIGN KEY (stations_id)
         REFERENCES public.stations (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-	CONSTRAINT stops_uid_unique UNIQUE ("uid")
+	CONSTRAINT stops_uid_unique UNIQUE ("uid", "t", "n")
 );
 
 CREATE TABLE arrivals (
