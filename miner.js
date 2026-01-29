@@ -18,19 +18,21 @@ export class miner_coordinator {
     }
 
     run () {
+        // run a single loop
         this.miner_loop(new Date());
 
-        // Call fetchStationData immediately when the server starts
-        // this.refresh_station_data();
-
-        // Schedule data fetch every 5 hours
-        cron.schedule('0 4 * * *', this.refresh_station_data);
+        // Call fetchStationData
+        this.refresh_station_data();
     }
 
     run_loop () {
+        // schedule loop hourly
         cron.schedule('0 * * * *', async () => {
             this.miner_loop(format(new Date(), 'HH'));
         });
+
+        // Schedule data fetch every 5 hours
+        cron.schedule('0 4 * * *', this.refresh_station_data);
     }
     
     async miner_loop(datetime) {
