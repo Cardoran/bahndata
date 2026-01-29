@@ -35,7 +35,7 @@ const stations_client = await stations_pool.connect();
 const timetable_client = await timetable_pool.connect();
 const pgq = new pg_query_handler(stations_client, timetable_client);
 const miner = new miner_coordinator(apiHeaders, pgq);
-miner.run_loop()
+miner.run()
 
 // Endpoint to trigger data fetch and store
 app.get('/fetch-stations', async (req, res) => {
