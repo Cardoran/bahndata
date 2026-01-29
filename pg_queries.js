@@ -4,7 +4,9 @@ const station_keys = {
 };
 const stop_keys = {
     eva: 'eva', 
-    id: 'uid'
+    uid: 'uid',
+    t: 't',
+    n: 'n'
 };
 const arrival_keys = {
     cde: 'cde', 
