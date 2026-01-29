@@ -260,13 +260,19 @@ export class pg_query_handler {
 
     async insert_data(table_key, data, parent, ref_id) {
         try{
+            if (table_key == 's') {
+                const parts = data['id'].split('-');
+                const l = parts.length;
+
+                data['n'] = parts[l - 1]
+                data['t'] = parts[l - 2]
+                data['uid'] = (l == 4 ? "-" + parts[l - 3] : parts[l - 3]);
+                console.log(data)
+            }
+
             const keys = table_dicts[table_key];
             console.log(table_key, parent, ref_id);
             const subset = Object.entries(keys).filter(el => Object.hasOwn(data, el[0]))
-            
-            if (table_key == 's') {
-                console.log(subset)
-            }
 
             const keyslist = subset.map(el => el[1]);
             const valueslist = subset.map(el => data[el[0]]);
