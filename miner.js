@@ -28,7 +28,7 @@ export class miner_coordinator {
     run_loop () {
         // schedule loop hourly
         cron.schedule('0 * * * *', async () => {
-            this.miner_loop(format(new Date(), 'HH'));
+            this.miner_loop(new Date());
         });
 
         // Schedule data fetch every 5 hours
