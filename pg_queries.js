@@ -269,11 +269,11 @@ export class pg_query_handler {
                 data['n'] = parts[l - 1]
                 data['t'] = parts[l - 2]
                 data['uid'] = (l == 4 ? "-" + parts[l - 3] : parts[l - 3]);
-                console.log(data)
+                // console.log(data)
             }
 
             const keys = table_dicts[table_key];
-            console.log(table_key, parent, ref_id);
+            // console.log(table_key, parent, ref_id);
             const subset = Object.entries(keys).filter(el => Object.hasOwn(data, el[0]))
 
             const keyslist = subset.map(el => el[1]);
@@ -295,8 +295,8 @@ export class pg_query_handler {
                 values_string += `, ${ref_id}`;
             }
             
-            console.log(keys_string);
-            console.log(values_string);
+            // console.log(keys_string);
+            // console.log(values_string);
 
             const table_name = table_names[table_key];
             const unique_key = table_unique[table_key];
