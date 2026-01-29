@@ -261,7 +261,7 @@ export class pg_query_handler {
     async insert_data(table_key, data, parent, ref_id) {
         try{
             const keys = table_dicts[table_key];
-            // console.log(parent, ref_id);
+            console.log(parent, ref_id);
             const subset = Object.entries(keys).filter(el => Object.hasOwn(data, el[0]))
             
             if (table_key == 's') {
@@ -287,8 +287,8 @@ export class pg_query_handler {
                 values_string += `, ${ref_id}`;
             }
             
-            // console.log(keys_string);
-            // console.log(values_string);
+            console.log(keys_string);
+            console.log(values_string);
 
             const table_name = table_names[table_key];
             const unique_key = table_unique[table_key];
