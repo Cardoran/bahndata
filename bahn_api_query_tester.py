@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import requests
 import xmltodict
+import json
 
 def get_timetable_xml(api_auth, EVA_NR, date:datetime = None) -> str:
     if date is None:
@@ -36,10 +37,9 @@ def get_timetable_xml(api_auth, EVA_NR, date:datetime = None) -> str:
     return response.text
 
 if __name__ == "__main__":
-    api_auth = {
-                "DB-Api-Key": "235a6da868e721b3ed0f8915d17759fb",
-                "DB-Client-Id": "2b83a09f021fad54d68cc31e3b5e03e2",
-            }
+    with open('.auth', 'r') as file:
+        api_auth = json.load(file)
+
     xml = get_timetable_xml(api_auth, 8000068)
     print(xml)
     datadict = xmltodict.parse(xml, attr_prefix='')["timetable"]
