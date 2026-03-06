@@ -37,7 +37,7 @@ def get_timetable_xml(api_auth, EVA_NR, date:datetime = None) -> str:
     return response.text
 
 if __name__ == "__main__":
-    with open('.auth', 'r') as file:
+    with open('auth.json', 'r') as file:
         api_auth = json.load(file)
 
     xml = get_timetable_xml(api_auth, 8000068)
