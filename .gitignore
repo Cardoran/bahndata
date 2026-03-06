@@ -96,7 +96,7 @@ dist
 .cache
 
 # authentication data
-.auth
+auth.json
 
 # Sveltekit cache directory
 .svelte-kit/
