@@ -2,7 +2,7 @@ import { Pool } from 'pg';
 import express from 'express';
 import { miner_coordinator } from './miner.js';
 import { pg_query_handler } from './pg_queries.js';
-import apiHeaders from './.auth' assert { type: 'json' };
+import apiHeaders from './.auth';
 
 const app = express();
 const port = 80;
