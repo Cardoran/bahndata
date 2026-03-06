@@ -2,18 +2,13 @@ import { Pool } from 'pg';
 import express from 'express';
 import { miner_coordinator } from './miner.js';
 import { pg_query_handler } from './pg_queries.js';
+import apiHeaders from './.auth' assert { type: 'json' };
 
 const app = express();
 const port = 80;
 
 // Serve static files (e.g., HTML, CSS, JS)
 app.use(express.static('public'));
-
-const apiHeaders = {
-  'DB-Api-Key': '235a6da868e721b3ed0f8915d17759fb', // Replace with your API key
-  'DB-Client-Id': '2b83a09f021fad54d68cc31e3b5e03e2',
-  'Accept': 'application/json',
-};
 
 // PostgreSQL connection pools
 const stations_pool = new Pool({
